@@ -1,0 +1,14 @@
+{
+  "name": "robottas",
+  "version": "0.0.1",
+  "description": "Private bot for \"The Iron Dram\"",
+  "main": "robottas.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eric Ebersohl",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.2.1"
+  }
+}
