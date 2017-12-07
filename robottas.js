@@ -1,20 +1,40 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
+const winston = require('winston');
 const auth = require('./auth.json');
 
+const client = new Discord.Client();
 const prefix = '&';
 
+const logger = new (winston.Logger)({
+    transports: [
+        new (winston.transports.Console)(),
+        new (winston.transports.File)({
+            name: 'info',
+            filename: 'robottas.info.log',
+            level: 'info',
+        }),
+        new (winston.transports.File)({
+            name: 'error',
+            filename: 'robottas.error.log',
+            level: 'error',
+        })
+    ]
+});
+
 client.on('ready', () => {
-    console.log('It worked, yo');
+    logger.info('Robottas initialized.');
 });
 
 client.on('message', message => {
     if (message.content.startsWith(prefix)) {
-        var command = message.content.substring(1);
+        let command = message.content.substring(1);
 
         switch(command) {
             case 'ping':
                 message.channel.send('pong!');
+            break;
+
+            case 'race':
             break;
             
             default:
