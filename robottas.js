@@ -1,8 +1,10 @@
 const Discord = require('discord.js');
 const winston = require('winston');
-const auth = require('./auth.json');
 
 const client = new Discord.Client();
+const ergastRequest = require('./ergastRequest.js');
+const auth = require('./auth.json');
+
 const prefix = '&';
 
 const logger = new (winston.Logger)({
@@ -35,6 +37,7 @@ client.on('message', message => {
             break;
 
             case 'race':
+                message.channel.send(ergastRequest.next());
             break;
             
             default:
