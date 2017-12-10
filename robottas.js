@@ -3,6 +3,7 @@ const winston = require('winston');
 
 const client = new Discord.Client();
 const ergastRequest = require('./ergastRequest.js');
+const utils = require('./utils.js');
 const auth = require('./auth.json');
 
 const prefix = '&';
@@ -32,12 +33,28 @@ client.on('message', message => {
         let command = message.content.substring(1);
 
         switch(command) {
-            case 'ping':
-                message.channel.send('pong!');
+            case 'help':
+                message.channel.send('Currently supported commands: \n' +
+                    'help - Print a list of the currently supported commands.' + '\n' +
+                    'ping - Verify that Robottas is functional.' + '\n' +
+                    'nextrace - Print the date, time, and location of the next F1 race.' + '\n');
             break;
 
-            case 'race':
-                message.channel.send(ergastRequest.next());
+            case 'ping':
+                message.channel.send(message.author + ' Minimal Talking!');
+            break;
+
+            case 'nextrace':
+                ergastRequest.nextRace().then((result) => {
+                    let cd = utils.msConvert(result.raceDate - Date.now());
+                    let dateAndTime = utils.formatDate(result.raceDate);
+                    message.channel.send(
+                        'Race: ' + result.raceName + '\n' +
+                        'Date: ' + dateAndTime.day + '\n' +
+                        'Time: ' + dateAndTime.time + '\n' +
+                        'Countdown: ' + cd.days + 'D : ' + cd.hours + 'H : ' + cd.minutes + 'M : ' + cd.seconds + 'S : ' + cd.milliseconds + 'Ms'
+                    )
+                });
             break;
             
             default:
